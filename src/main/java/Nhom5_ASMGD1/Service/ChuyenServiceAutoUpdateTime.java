@@ -79,7 +79,7 @@ public class ChuyenServiceAutoUpdateTime {
 						ve.setStatus(true);
 						veDao.save(ve);
 					}
-					System.out.println("đã update vé");
+
 				}
 			}
 		}

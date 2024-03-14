@@ -69,6 +69,11 @@ public class ShipController {
 		try {
 			if(daoTau.existsById(id)) {
 				System.out.println(tau.getSoLuongGhe()+"sl ge la");
+                if(tau.getStatus()==null || tau.getStatus()==true){
+                    tau.setStatus(true);
+                }else{
+                    tau.setStatus(false);
+                }
 				daoTau.save(tau);
 
 			}else {		

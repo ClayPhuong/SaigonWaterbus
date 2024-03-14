@@ -47,7 +47,7 @@ public class AdminControllerView {
 	private TuyenDAO daoTuyen;
 	@GetMapping("/indexAdmin")
 	public String index(Model model) {
-		model.addAttribute("viewad", "/WEB-INF/views/admin/banner.jsp");
+		model.addAttribute("viewad", "/admin/banner.html");
 		return "admin/home";
 	}
 
@@ -62,12 +62,12 @@ public class AdminControllerView {
             @ModelAttribute("hoaDon") HoaDon hoaDon,
             @ModelAttribute("idChuyen") String idChuyen) {
 		if ("tools".equals(toolName)) {
-			model.addAttribute("viewad", "/WEB-INF/views/admin/tools.jsp");
+			model.addAttribute("viewad", "/admin/tools.jsp");
 		} else if ("add".equals(toolName)) {
-			model.addAttribute("viewad", "/WEB-INF/views/admin/addticket.jsp");
+			model.addAttribute("viewad", "/admin/addticket.jsp");
 		}
 		else if ("update".equals(toolName)) {
-			model.addAttribute("viewad", "/WEB-INF/views/admin/update.jsp");
+			model.addAttribute("viewad", "/admin/update.jsp");
 		} else if ("routeship".equals(toolName)) {
 		 	if( keyword==null || keyword.isEmpty()) {
 				model.addAttribute("listTuyen", daoTuyen.findAll());
@@ -76,7 +76,7 @@ public class AdminControllerView {
 		 	}
 			model.addAttribute("tuyen", new Tuyen());
 			model.addAttribute("listTau", daoTau.findByTauStatus());
-			model.addAttribute("viewad", "/WEB-INF/views/admin/ShipRoutes/routeship.jsp");
+			model.addAttribute("viewad", "/admin/ShipRoutes/routeship.html");
 		}
 		 else if ("toolship".equals(toolName)) {
 			 	if( keyword==null || keyword.isEmpty()) {
@@ -85,7 +85,7 @@ public class AdminControllerView {
 					model.addAttribute("listTau", daoTau.searchByKeyword(keyword));
 			 	}
 				model.addAttribute("tau", new Tau());
-				model.addAttribute("viewad", "/WEB-INF/views/admin/Ship/toolship.jsp");
+				model.addAttribute("viewad", "/admin/Ship/toolship.html");
 			}
 	 else if ("driver".equals(toolName)) {
 		System.out.println("keyword: " + keyword);
@@ -96,7 +96,7 @@ public class AdminControllerView {
 			listTaiXe = taiXeDao.findByHoTenOrSoDT(keyword);
 		}
 		model.addAttribute("listTaiXe", listTaiXe);
-		model.addAttribute("viewad", "/WEB-INF/views/admin/driver/driver.jsp");
+		model.addAttribute("viewad", "/admin/driver/driver.html");
 	} else if ("trip".equals(toolName)) {
 		if (keyword == null || keyword.isEmpty()) {
 			LocalDate dateNow = LocalDate.now();
@@ -114,7 +114,7 @@ public class AdminControllerView {
 			model.addAttribute("listVeChuyen", listVeChuyen);
 			System.out.println("list ve chuyn: " + listVeChuyen.size());
 		}
-		model.addAttribute("viewad", "/WEB-INF/views/admin/trip/trip.jsp");
+		model.addAttribute("viewad", "/admin/trip/trip.html");
 	} else if ("ve".equals(toolName)) {
 		System.out.println("keyword: " + keyword);
 		List<Ve> listVe;
@@ -124,7 +124,7 @@ public class AdminControllerView {
 			listVe = VeDao.findBytenGheOrid(keyword);
 		}
 		model.addAttribute("listVe", listVe);
-		model.addAttribute("viewad", "/WEB-INF/views/admin/diem/ve.jsp");
+		model.addAttribute("viewad", "/admin/diem/ve.html");
 	}
 	
 	else if ("hoadon".equals(toolName)) {
@@ -135,7 +135,7 @@ public class AdminControllerView {
 			listHoaDon = HoaDonDao.findBytenGheOridAccount(keyword);
 		}
 		model.addAttribute("listHoaDon", listHoaDon);
-		model.addAttribute("viewad", "/WEB-INF/views/admin/hoadonadmin.jsp");
+		model.addAttribute("viewad", "/admin/hoadonadmin.html");
 	}
 
 			else {
