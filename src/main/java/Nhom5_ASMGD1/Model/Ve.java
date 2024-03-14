@@ -31,7 +31,21 @@ public class Ve {
 	Chuyen chuyen;
 	
 	String tenGhe;
+    Integer row_number ;
 	@Min(0)
 	Double giaVe;
 	Boolean status;
+
+    @Override
+    public String toString() {
+        return "Ve{" +
+                "id=" + id +
+                ", id_hoaDon=" + (hoaDon != null ? hoaDon.getId() : "null") +
+                ", id_chuyen=" + (chuyen != null ? chuyen.getId() : "null") +
+                ", tenGhe='" + tenGhe + '\'' +
+                ", row_number=" + row_number +
+                ", giaVe=" + giaVe +
+                ", status=" + status +
+                '}';
+    }
 }

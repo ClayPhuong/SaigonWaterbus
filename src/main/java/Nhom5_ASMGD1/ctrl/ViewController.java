@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import Nhom5_ASMGD1.Service.impl.ITicketService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,21 +24,24 @@ import Nhom5_ASMGD1.DAO.VeDAO;
 import Nhom5_ASMGD1.Model.Chuyen;
 import Nhom5_ASMGD1.Model.HoaDon;
 import Nhom5_ASMGD1.Model.Ve;
-
+@RequiredArgsConstructor
 @Controller
 public class ViewController {
+    private final ITicketService iTicketService;
 	@Autowired
 	VeDAO veDao;
 	@Autowired
 	UserDao userDao;
 	@Autowired
 	ChuyenDAO chuyenDao;
+
+
 	
 	@Autowired
 	HoaDonDAO HoaDonDao;
 	@GetMapping ("/saigonwaterbus")
 	public String getIndex(Model model) {
-		model.addAttribute("view", "/WEB-INF/views/user/trangchu.jsp");
+        model.addAttribute("view", "/user/trangchu");
 		return "user/index";
 	}
 	
@@ -71,19 +76,19 @@ public class ViewController {
 		        }
 		    });
 			model.addAttribute("listVeDaDat",listVeDaDat);
-			model.addAttribute("view", "/WEB-INF/views/user/lichsudatve.jsp");
+			model.addAttribute("view", "/user/lichsudatve.html");
 		}
 		else if ("ga-tau-thuy-thanh-da".equals(pathName)) {
-			model.addAttribute("view", "/WEB-INF/views/user/ga.jsp");
+			model.addAttribute("view", "/user/ga.html");
 		} else if ("ga-tau-thuy-hiep-binh-chanh".equals(pathName)) {
-			model.addAttribute("view", "/WEB-INF/views/user/ga.jsp");
+			model.addAttribute("view", "/user/ga.html");
 		}
 
 		else if ("ga-tau-thuy-linh-dong".equals(pathName)) {
-			model.addAttribute("view", "/WEB-INF/views/user/ga.jsp");
+			model.addAttribute("view", "/user/ga.html");
 		}
 		else if ("lich-khoi-hanh".equals(pathName)) {
-			model.addAttribute("view", "/WEB-INF/views/user/lich.jsp");
+			model.addAttribute("view", "/user/lich.html");
 		}
 		else if ("tim-ve".equals(pathName)) {
 			LocalDate ngayKH;
@@ -91,7 +96,7 @@ public class ViewController {
 			if (ngayKhoiHanh != null && !ngayKhoiHanh.isEmpty()) {
 			    ngayKH = LocalDate.parse(ngayKhoiHanh);
 			    System.out.println("ngày kh: " + ngayKH);
-			    listChuyen = chuyenDao.findChuyen(ngayKH,benDi,benDen);
+			    listChuyen = iTicketService.findChuyen(ngayKH,benDi,benDen);
 			    System.out.println(listChuyen.size() + "size list");
 			    model.addAttribute("ngayKH", ngayKH);
 			} else {
@@ -102,13 +107,13 @@ public class ViewController {
 			model.addAttribute("benDi", benDi);
 			model.addAttribute("benDen", benDen);
 			
-			model.addAttribute("view", "/WEB-INF/views/user/datve.jsp");
+			model.addAttribute("view", "/user/datve.html");
 		}
 		else if ("kiem-tra-ve".equals(pathName)) {
-			model.addAttribute("view", "/WEB-INF/views/user/kiemtrave.jsp");
+			model.addAttribute("view", "/user/kiemtrave.html");
 		}
 		else if ("lien-he".equals(pathName)) {
-			model.addAttribute("view", "/WEB-INF/views/user/lienhe.jsp");
+			model.addAttribute("view", "/user/lienhe.html");
 		}
 		else {
 			return "user/index";

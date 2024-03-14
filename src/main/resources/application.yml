@@ -3,14 +3,10 @@ server:
   servlet:
     context-path: /asm
 spring:
-  mvc:
-    view:
-      prefix: /WEB-INF/views/
-      suffix: .jsp
   datasource:
-    url: jdbc:sqlserver://localhost:1433;databaseName=SaigonWaterBus;encrypt=false;trustServerCertificate=true
+    url: jdbc:sqlserver://localhost:1435;databaseName=SaigonWaterBus;encrypt=false;trustServerCertificate=true
     username: sa
-    password: 123
+    password: Abc@123456789
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     database-platform: org.hibernate.dialect.SQLServerDialect
@@ -44,6 +40,9 @@ spring:
           auth: true
           starttls:
             enable: true
+            required: true
+  thymeleaf:
+    encoding: UTF-8
   twilio:
   account_sid: AC5ff0b131ed3be3967d9a76e29b15cdc0
   auth_token: adf726566d6b4d36a7aaec39bb350676

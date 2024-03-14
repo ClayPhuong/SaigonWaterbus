@@ -31,7 +31,7 @@ public class ThongKeCtrl {
 	        model.addAttribute("listThongKe", list1);
 	    }
 	    model.addAttribute("totalDate", HoaDonDao.findTotalPrice());
-	    model.addAttribute("viewad", "/WEB-INF/views/admin/thongke.jsp");
+	    model.addAttribute("viewad", "/admin/thongke.html");
 	    return "admin/home";
 	}
 
