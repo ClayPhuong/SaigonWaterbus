@@ -137,7 +137,6 @@ public class AdminControllerView {
 		model.addAttribute("listHoaDon", listHoaDon);
 		model.addAttribute("viewad", "/WEB-INF/views/admin/hoadonadmin.jsp");
 	}
-
 			else {
 				return "admin/home";
 			}

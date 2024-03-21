@@ -31,7 +31,7 @@ public class ChuyenServiceAutoUpdateTime {
 		System.out.println("Thời gian hiện tại: " + dateNow);
 		LocalDate oldDate = chuyenDao.findOldate();
 
-		if (oldDate != null && ChronoUnit.DAYS.between(oldDate, dateNow) == 1) {
+		if (oldDate != null && ChronoUnit.DAYS.between(oldDate, dateNow) >= 1) {
 			List<Chuyen> chuyenList = chuyenDao.findChuyenByDate(oldDate);
 			for (Chuyen chuyen : chuyenList) {
 				LocalDate newStartDate = chuyen.getNgayKhoiHanh().plusDays(3);
