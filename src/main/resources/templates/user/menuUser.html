@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Menu -->
+<nav class="navbar sticky-top navbar-expand-lg fs-6" data-bs-theme="light" th:fragment="navbar">
+    <div class="container-fluid">
+        <a class="navbar-brand active fs-4" th:href="@{/saigonwaterbus}">
+            <img th:src="@{/images/logo.png}" alt="Bootstrap" class="logo">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/saigonwaterbus}" th:text="#{lo.mn.homePage}"></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link" th:href="@{/saigonwaterbus/ga-tau-thuy}" th:text="#{lo.mn.trainStation}"></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" th:href="@{/saigonwaterbus/ga-tau-thuy}"> <span
+                                class="icon"><i class="fa-solid fa-plus"></i></span> Bạch Đằng</a></li>
+                        <li><a class="dropdown-item" th:href="@{/saigonwaterbus/ga-tau-thuy}"> <span class="icon"><i
+                                class="fa-solid fa-plus"></i></span> Bình An</a></li>
+                        <li><a class="dropdown-item" th:href="@{/saigonwaterbus/ga-tau-thuy}"> <span
+                                class="icon"><i class="fa-solid fa-plus"></i></span> Thanh Đa</a></li>
+                        <li><a class="dropdown-item" th:href="@{/saigonwaterbus/ga-tau-thuy}"> <span
+                                class="icon"><i class="fa-solid fa-plus"></i></span> Hiệp Bình Chánh</a></li>
+                        <li><a class="dropdown-item" th:href="@{/saigonwaterbus/ga-tau-thuy}"> <span
+                                class="icon"><i class="fa-solid fa-plus"></i></span> Linh Đông</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/saigonwaterbus/lich-khoi-hanh}" th:text="#{lo.mn.departureSchedule}">
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/saigonwaterbus/dat-ve}" th:text="#{lo.mn.bookTickets}"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/saigonwaterbus/lien-he}" th:text="#{lo.mn.contact}"></a>
+
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fa-solid fa-language"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item active" href="?lang=vi">Tiếng Việt</a></li>
+                        <li><a class="dropdown-item" href="?lang=en">Tiếng Anh</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fa-regular fa-address-card"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" th:href="@{/saigonwaterbus/profile}"
+                               th:text="#{lo.mn.personalInformation}"></a></li>
+                        <li><a class="dropdown-item" th:href="@{/saigonwaterbus/lich-su-dat-ve}"
+                               th:text="#{lo.mn.ticketHistory}"></a></li>
+                        <li><a class="dropdown-item" th:href="@{/logout}" th:text="#{lo.mn.logout}"></a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

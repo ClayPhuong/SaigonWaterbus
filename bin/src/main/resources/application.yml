@@ -1,9 +1,0 @@
-server:
-  port: 8080
-  servlet:
-    context-path: /asm
-spring:
-  mvc:
-    view:
-      prefix: /WEB-INF/views/
-      suffix: .jsp

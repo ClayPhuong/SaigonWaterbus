@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/user/layoutUser :: dynamic(~{ :: body})}">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Document</title>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous"/>
+    <style>
+        .table-layout-sodoghe tr {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .image-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .seat-type-info.selected svg path {
+            fill: green;
+        }
+
+        .seat-type-info.unavailable svg path {
+            fill: red;
+        }
+
+        .text-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .timve {
+            background-color: #fcb900;
+            color: black;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 25px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="image-container" style="height: 240px">
+    <img
+            th:src="@{/images/home-slide-4-1536x880.jpg}"
+            class="d-block"
+            style="height: 100%; width: 100%"
+    />
+    <div class="text-overlay">Đặt vé trực tuyến</div>
+</div>
+
+<!-- bắt đầu form tìm kiếm chuyến tàu -->
+<div class="row justify-content-center align-items-center g-2" style="margin-top: 10px">
+    <form th:action="@{/saigonwaterbus/tim-ve}"
+            method="get"
+            class="d-flex justify-content-center align-items-center">
+        <div class="col-10 d-flex align-items-center justify-content-center">
+            <div class="col-3">
+                <strong class="go"><i class="fa-solid fa-circle-arrow-up"></i> Nơi đi</strong>
+                <select name="benDi" class="form-select fs-6 border border-0" aria-label="Chọn nơi đến">
+                    <option value="Chọn">Chọn nơi đi</option>
+                    <option th:value="'Bạch Đằng'" th:selected="${benDi eq 'Bạch Đằng'}">
+                        Ga tàu thủy Bạch Đằng
+                    </option>
+                    <option th:value="'Bình An'" th:selected="${benDi eq 'Bình An'}">
+                        Ga tàu thủy Bình An
+                    </option>
+                    <option th:value="'Thanh Đa'" th:selected="${benDi eq 'Thanh Đa'}">
+                        Ga tàu thủy Thanh Đa
+                    </option>
+                    <option th:value="'Hiệp Bình Chánh'" th:selected="${benDi eq 'Hiệp Bình Chánh'}">
+                        Ga tàu thủy Hiệp Bình Chánh
+                    </option>
+                    <option th:value="'Linh Đông'" th:selected="${benDi eq 'Linh Đông'}">
+                        Ga tàu thủy Linh Đông
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-1 d-flex align-items-center justify-content-center">
+                <img th:src="@{/images/swap-xe-to.svg}" alt=""/>
+            </div>
+
+            <div class="col-3">
+                <strong class="go"><i class="fa-solid fa-circle-arrow-up"></i> Nơi đến</strong>
+                <select name="benDen" class="form-select fs-6 border border-0" aria-label="Chọn nơi đến">
+                    <option value="Chọn">Chọn nơi đến</option>
+                    <option th:value="'Bạch Đằng'" th:selected="${benDen eq 'Bạch Đằng'}">
+                        Ga tàu thủy Bạch Đằng
+                    </option>
+                    <option th:value="'Bình An'" th:selected="${benDen eq 'Bình An'}">
+                        Ga tàu thủy Bình An
+                    </option>
+                    <option th:value="'Thanh Đa'" th:selected="${benDen eq 'Thanh Đa'}">
+                        Ga tàu thủy Thanh Đa
+                    </option>
+                    <option th:value="'Hiệp Bình Chánh'" th:selected="${benDen eq 'Hiệp Bình Chánh'}">
+                        Ga tàu thủy Hiệp Bình Chánh
+                    </option>
+                    <option th:value="'Linh Đông'" th:selected="${benDen eq 'Linh Đông'}">
+                        Ga tàu thủy Linh Đông
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-2" style="padding-left: 5px">
+                <strong class="go"><i class="fa-solid fa-calendar-days"></i> Ngày đi</strong>
+                <input name="ngayKhoiHanh"
+                        value="${ngayKH}"
+                        type="date"
+                        class="form-control fs-6 border border-0"/>
+            </div>
+
+            <div class="col-2 d-flex align-items-center justify-content-center">
+                <button type="submit" class="btn btn-success timve p-2">
+                    <i class="fa-solid fa-magnifying-glass"></i><span> Tìm vé</span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- kết thúc form tìm kiếm chuyến tàu -->
+
+<!--	<div class="row d-flex justify-content-center align-items-center p-0">-->
+<!--		<div class="col-10">-->
+<!--			&lt;!&ndash; each ở đây nè &ndash;&gt;-->
+<!--            <div th:each="item : ${listChuyen}" class="card mb-3">-->
+<!--                <div class="row g-0">-->
+<!--                    <div class="col-md-5 d-flex justify-content-center">-->
+<!--                        <img th:src="@{/images/anhve.jpeg}" class="img-fluid rounded-start">-->
+<!--                    </div>-->
+<!--                    <div class="col-md-4">-->
+<!--                        <div class="card-body">-->
+<!--                            <h5 class="card-title">SỐ GHẾ CÒN TRỐNG: <span style="color: #fcb900;" th:text="${item.gheTrong}"></span> </h5>-->
+<!--                            <div>-->
+<!--                                <i class="fa-regular fa-circle"></i>-->
+<!--                                <strong th:text="${item.gioDi}"></strong>-->
+<!--                                <b style="color: #fcb900;" th:text="'Ga tàu thủy ' + ${item.tuyen.benDi}"></b>-->
+<!--                            </div>-->
+<!--                            <div>-->
+<!--                                <i class="fa-solid fa-ellipsis-vertical"></i>-->
+<!--                                <strong style="font-size: 11px;" th:text="'Bến dừng: ' + ${item.tuyen.benDung}"></strong>-->
+<!--                            </div>-->
+<!--                            <div>-->
+<!--                                <i class="fa-solid fa-location-dot"></i>-->
+<!--                                <strong th:text="${item.gioDen}"></strong>-->
+<!--                                <b style="color: #fcb900;" th:text="'Ga tàu thủy ' + ${item.tuyen.benDen}"></b>-->
+<!--                            </div>-->
+<!--                            <div class="">-->
+<!--                                <form id="bookingForm" action="/asm/dat-ve" method="post">-->
+<!--                                    <b>Danh sách chỗ ngồi</b>  <br>-->
+<!--                                    <input type="hidden" name="idChuyen" th:value="${item.id}">-->
+<!--                                    <div th:if="${#lists.isEmpty(item.listVe)}">-->
+<!--                                        <p>Không có ghế ngồi</p>-->
+<!--                                    </div>-->
+<!--                                    <div th:each="ve, loop : ${item.listVe}" th:if="${!#lists.isEmpty(item.listVe)}">-->
+<!--                                        <input type="checkbox" th:value="${ve.tenGhe}" name="selectedSeats" th:id="'ve_' + ${ve.id}" th:name="'ve_' + ${ve.id}" th:disabled="${ve.status}">-->
+<!--                                        <label th:for="'ve_' + ${ve.id}" th:text="${ve.tenGhe}"></label>-->
+<!--                                        <br th:if="${loop.index % 4 == 3 || loop.last}">-->
+<!--                                    </div>-->
+<!--                                    <button type="submit" onclick="submitBookingForm()" class="btn btn-success timve p-2"><i class="fa-solid fa-ticket"></i><span> Đặt vé</span></button>-->
+<!--                                </form>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-3 d-flex justify-content-center">-->
+<!--                        <img alt="" th:src="@{${pageContext.request.contextPath}/img/mapthuyen.png}" class="img-fluid rounded-start">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--		</div>-->
+<!--	</div>-->
+<div class="row d-flex justify-content-center align-items-center p-0">
+    <div id="listResult" class="nl-result-list" th:each="item : ${listChuyen}" style="width: 1200px; margin: auto">
+        <div class="route-item">
+            <div class="route-item-main-content nl-route-detail-container">
+                <div class="nl-route-detail-container-content">
+                    <div style="width: 100%; display: flex">
+                        <div class="nl-route-detail-image-container hidden-xs">
+                            <img
+                                    alt="Hình ảnh"
+                                    src="////static.vexere.com/production/images/1675673512101.jpeg"
+                                    class="w5"
+                            />
+                        </div>
+                        <div class="nl-route-detail-right-container">
+                            <div class="nl-route-detail-info">
+                                <div class="nl-vehicle-type-container">
+                                    <div class="nl-vehicle-type">Ghế ngồi 75 chỗ</div>
+                                </div>
+                                <div class="nl-from-to">
+                                    <svg
+                                            class="TicketPC__LocationRouteSVG-sc-1mxgwjh-4 dSQflF"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="14"
+                                            height="74"
+                                            viewBox="0 0 14 74"
+                                    >
+                                        <path
+                                                fill="none"
+                                                stroke="#787878"
+                                                stroke-linecap="round"
+                                                stroke-width="2"
+                                                stroke-dasharray="0 7"
+                                                d="M7 13.5v46"
+                                        ></path>
+                                        <g fill="none" stroke="#484848" stroke-width="3">
+                                            <circle cx="7" cy="7" r="7" stroke="none"></circle>
+                                            <circle cx="7" cy="7" r="5.5"></circle>
+                                        </g>
+                                        <path
+                                                d="M7 58a5.953 5.953 0 0 0-6 5.891 5.657 5.657 0 0 0 .525 2.4 37.124 37.124 0 0 0 5.222 7.591.338.338 0 0 0 .506 0 37.142 37.142 0 0 0 5.222-7.582A5.655 5.655 0 0 0 13 63.9 5.953 5.953 0 0 0 7 58zm0 8.95a3.092 3.092 0 0 1-3.117-3.06 3.117 3.117 0 0 1 6.234 0A3.092 3.092 0 0 1 7 66.95z"
+                                                fill="#787878"
+                                        ></path>
+                                    </svg>
+                                    <div class="nl-from-to-content">
+                                        <div class="content from">
+                                            <div class="hour">08:00</div>
+                                            <div class="dot">●</div>
+                                            &nbsp;
+                                            <div class="nl-dib">
+                                                <a
+                                                        class="depart-station text-route-link hover-orange-border hover-blue-text black-text"
+                                                        th:text="'Ga tàu thủy ' + ${item.tuyen.benDen}"
+                                                ></a
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="duration">05 phút</div>
+                                        <div class="content to">
+                                            <div class="hour">08:05</div>
+                                            <div class="dot">●</div>
+                                            &nbsp;
+                                            <div class="nl-dib">
+                                                <a
+                                                        class="depart-station text-route-link hover-orange-border hover-blue-text black-text"
+                                                        th:text="'Ga tàu thủy ' + ${item.tuyen.benDung}"
+                                                ></a
+                                                >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="route-detail-button-container"></div>
+                            </div>
+                            <div class="nl-fare-info">
+                                <!--                                            <div class="nl-fare">-->
+                                <!--                                                <h6 class="nl-price">-->
+                                <!--                                                    <span ${item.listTuyen.giaVe}></span>-->
+                                <!--                                                    <div class="nl-unit-price">đ</div>-->
+                                <!--                                                </h6>-->
+                                <!--                                            </div>-->
+                            </div>
+                            <div class="nl-detail-and-action">
+                                <div class="nl-detail-info">
+                                    <div class="num-available-seats">
+                                        <div class="available-seats">
+                                            <span>Còn</span>&nbsp;<span class="seats" th:text="${item.gheTrong}"> ghế trống</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="nl-action">
+                                    <div class="button-container">
+                                        <div class="btn-label" title="Nhấp để đóng lại">Đóng lại</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-100 flex booking-container" style="margin: 0px; padding: 0px">
+                <div id="booking-form" class="nl-booking-expand current-step-0">
+                    <div class="steps-header">
+                        <div class="ant-steps ant-steps-horizontal ant-steps-label-horizontal">
+                            <div class="ant-steps-item ant-steps-item-process ant-steps-item-active">
+                                <div class="ant-steps-item-container">
+                                    <div class="ant-steps-item-tail"></div>
+                                    <div class="ant-steps-item-icon">
+                                        <span class="ant-steps-icon">1</span>
+                                    </div>
+                                    <div class="ant-steps-item-content">
+                                        <div class="ant-steps-item-title">Chọn chỗ</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ant-steps-item ant-steps-item-wait">
+                                <div class="ant-steps-item-container">
+                                    <div class="ant-steps-item-tail"></div>
+                                    <div class="ant-steps-item-icon">
+                                        <span class="ant-steps-icon">2</span>
+                                    </div>
+                                    <div class="ant-steps-item-content">
+                                        <div class="ant-steps-item-title">Điểm đón, trả</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ant-steps-item ant-steps-item-wait">
+                                <div class="ant-steps-item-container">
+                                    <div class="ant-steps-item-tail"></div>
+                                    <div class="ant-steps-item-icon">
+                                        <span class="ant-steps-icon">3</span>
+                                    </div>
+                                    <div class="ant-steps-item-content">
+                                        <div class="ant-steps-item-title">Nhập thông tin</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="steps-content">
+                        <div class="nl-seat-template">
+                            <div class="seat-template-col">
+                                <div class="seat-type-groups">
+                                    <div class="seat-type-info available">
+                                        <svg
+                                                width="40"
+                                                height="32"
+                                                viewBox="0 0 40 32"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <rect
+                                                    x="8.75"
+                                                    y="2.75"
+                                                    width="22.5"
+                                                    height="26.5"
+                                                    rx="2.25"
+                                                    fill="#FFFFFF"
+                                                    stroke="#B8B8B8"
+                                                    stroke-width="1.5"
+                                                    stroke-linejoin="round"
+                                            ></rect>
+                                            <rect
+                                                    x="10.25"
+                                                    y="11.75"
+                                                    width="14.5"
+                                                    height="5.5"
+                                                    rx="2.25"
+                                                    transform="rotate(90 10.25 11.75)"
+                                                    fill="#FFFFFF"
+                                                    stroke="#B8B8B8"
+                                                    stroke-width="1.5"
+                                                    stroke-linejoin="round"
+                                            ></rect>
+                                            <rect
+                                                    x="35.25"
+                                                    y="11.75"
+                                                    width="14.5"
+                                                    height="5.5"
+                                                    rx="2.25"
+                                                    transform="rotate(90 35.25 11.75)"
+                                                    fill="#FFFFFF"
+                                                    stroke="#B8B8B8"
+                                                    stroke-width="1.5"
+                                                    stroke-linejoin="round"
+                                            ></rect>
+                                            <rect
+                                                    x="8.75"
+                                                    y="22.75"
+                                                    width="22.5"
+                                                    height="6.5"
+                                                    rx="2.25"
+                                                    fill="#FFFFFF"
+                                                    stroke="#B8B8B8"
+                                                    stroke-width="1.5"
+                                                    stroke-linejoin="round"
+                                            ></rect>
+                                            <path
+                                                    class="icon-selected"
+                                                    d="M20.0002 6.33337C16.3202 6.33337 13.3335 9.32004 13.3335 13C13.3335 16.68 16.3202 19.6667 20.0002 19.6667C23.6802 19.6667 26.6668 16.68 26.6668 13C26.6668 9.32004 23.6802 6.33337 20.0002 6.33337ZM18.6668 16.3334L15.3335 13L16.2735 12.06L18.6668 14.4467L23.7268 9.38671L24.6668 10.3334L18.6668 16.3334Z"
+                                                    fill="transparent"
+                                            ></path>
+                                            <path
+                                                    class="icon-disabled"
+                                                    d="M24.96 9.45992L23.54 8.03992L20 11.5899L16.46 8.03992L15.04 9.45992L18.59 12.9999L15.04 16.5399L16.46 17.9599L20 14.4099L23.54 17.9599L24.96 16.5399L21.41 12.9999L24.96 9.45992Z"
+                                                    fill="transparent"
+                                            ></path>
+                                        </svg>
+                                        <div class="seat-type-info-value">Còn trống</div>
+                                    </div>
+                                    <div class="seat-type-info unavailable">
+                                        <svg
+                                                width="40"
+                                                height="32"
+                                                viewBox="0 0 40 32"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <rect
+                                                    x="8.75"
+                                                    y="2.75"
+                                                    width="22.5"
+                                                    height="26.5"
+                                                    rx="2.25"
+                                                    fill="#FFFFFF"
+                                                    stroke="#B8B8B8"
+                                                    stroke-width="1.5"
+                                                    stroke-linejoin="round"
+                                            ></rect>
+                                            <rect
+                                                    x="10.25"
+                                                    y="11.75"
+                                                    width="14.5"
+                                                    height="5.5"
+                                                    rx="2.25"
+                                                    transform="rotate(90 10.25 11.75)"
+                                                    fill="#FFFFFF"
+                                                    stroke="#B8B8B8"
+                                                    stroke-width="1.5"
+                                                    stroke-linejoin="round"
+                                            ></rect>
+                                            <rect
+                                                    x="35.25"
+                                                    y="11.75"
+                                                    width="14.5"
+                                                    height="5.5"
+                                                    rx="2.25"
+                                                    transform="rotate(90 35.25 11.75)"
+                                                    fill="#FFFFFF"
+                                                    stroke="#B8B8B8"
+                                                    stroke-width="1.5"
+                                                    stroke-linejoin="round"
+                                            ></rect>
+                                            <rect
+                                                    x="8.75"
+                                                    y="22.75"
+                                                    width="22.5"
+                                                    height="6.5"
+                                                    rx="2.25"
+                                                    fill="#FFFFFF"
+                                                    stroke="#B8B8B8"
+                                                    stroke-width="1.5"
+                                                    stroke-linejoin="round"
+                                            ></rect>
+                                            <path
+                                                    class="icon-selected"
+                                                    d="M20.0002 6.33337C16.3202 6.33337 13.3335 9.32004 13.3335 13C13.3335 16.68 16.3202 19.6667 20.0002 19.6667C23.6802 19.6667 26.6668 16.68 26.6668 13C26.6668 9.32004 23.6802 6.33337 20.0002 6.33337ZM18.6668 16.3334L15.3335 13L16.2735 12.06L18.6668 14.4467L23.7268 9.38671L24.6668 10.3334L18.6668 16.3334Z"
+                                                    fill="transparent"
+                                            ></path>
+                                            <path
+                                                    class="icon-disabled"
+                                                    d="M24.96 9.45992L23.54 8.03992L20 11.5899L16.46 8.03992L15.04 9.45992L18.59 12.9999L15.04 16.5399L16.46 17.9599L20 14.4099L23.54 17.9599L24.96 16.5399L21.41 12.9999L24.96 9.45992Z"
+                                                    fill="transparent"
+                                            ></path>
+                                        </svg>
+                                        <div class="seat-type-info-value">Ghế không bán</div>
+                                    </div>
+                                    <div class="seat-type-info selected">
+                                        <svg
+                                                width="40"
+                                                height="32"
+                                                viewBox="0 0 40 32"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <rect
+                                                    x="8.75"
+                                                    y="2.75"
+                                                    width="22.5"
+                                                    height="26.5"
+                                                    rx="2.25"
+                                                    fill="#FFFFFF"
+                                                    stroke="#B8B8B8"
+                                                    stroke-width="1.5"
+                                                    stroke-linejoin="round"
+                                            ></rect>
+                                            <rect
+                                                    x="10.25"
+                                                    y="11.75"
+                                                    width="14.5"
+                                                    height="5.5"
+                                                    rx="2.25"
+                                                    transform="rotate(90 10.25 11.75)"
+                                                    fill="#FFFFFF"
+                                                    stroke="#B8B8B8"
+                                                    stroke-width="1.5"
+                                                    stroke-linejoin="round"
+                                            ></rect>
+                                            <rect
+                                                    x="35.25"
+                                                    y="11.75"
+                                                    width="14.5"
+                                                    height="5.5"
+                                                    rx="2.25"
+                                                    transform="rotate(90 35.25 11.75)"
+                                                    fill="#FFFFFF"
+                                                    stroke="#B8B8B8"
+                                                    stroke-width="1.5"
+                                                    stroke-linejoin="round"
+                                            ></rect>
+                                            <rect
+                                                    x="8.75"
+                                                    y="22.75"
+                                                    width="22.5"
+                                                    height="6.5"
+                                                    rx="2.25"
+                                                    fill="#FFFFFF"
+                                                    stroke="#B8B8B8"
+                                                    stroke-width="1.5"
+                                                    stroke-linejoin="round"
+                                            ></rect>
+                                            <path
+                                                    class="icon-selected"
+                                                    d="M20.0002 6.33337C16.3202 6.33337 13.3335 9.32004 13.3335 13C13.3335 16.68 16.3202 19.6667 20.0002 19.6667C23.6802 19.6667 26.6668 16.68 26.6668 13C26.6668 9.32004 23.6802 6.33337 20.0002 6.33337ZM18.6668 16.3334L15.3335 13L16.2735 12.06L18.6668 14.4467L23.7268 9.38671L24.6668 10.3334L18.6668 16.3334Z"
+                                                    fill="transparent"
+                                            ></path>
+                                            <path
+                                                    class="icon-disabled"
+                                                    d="M24.96 9.45992L23.54 8.03992L20 11.5899L16.46 8.03992L15.04 9.45992L18.59 12.9999L15.04 16.5399L16.46 17.9599L20 14.4099L23.54 17.9599L24.96 16.5399L21.41 12.9999L24.96 9.45992Z"
+                                                    fill="transparent"
+                                            ></path>
+                                        </svg>
+                                        <div class="seat-type-info-value">Đang chọn</div>
+                                    </div>
+                                </div>
+
+                                <div class="tables-flex seat-selection">
+                                    <div class="seat-template" style="margin-top: 10px">
+                                        <div class="coach-container">
+                                            <div class="nl-coach-name"></div>
+                                            <div class="nl-coach">
+                                                <form id="bookingForm" action="/asm/dat-ve" method="post">
+                                                    <input type="hidden" id="selectedSeats" name="selectedSeats">
+                                                    <table class="table-layout-sodoghe table mb0" width="100%">
+                                                        <tbody>
+                                                        <input type="hidden" name="idChuyen" th:value="${item.id}">
+
+
+                                                        <tr th:each="item : ${item.listVe}" style="
+                                                                        margin-top: 20px;
+                                                                        margin-bottom: 20px;
+                                                                    ">
+                                                            <input type="hidden" name="idGiaVe"
+                                                                   th:value="${item?.giaVe}">
+                                                            <td>
+                                                                <div class="seat-item available z-max"
+                                                                     th:value="${item.tenGhe}" name="selectedSeats"
+                                                                     th:id="'ve_' + ${item.id}"
+                                                                     onclick="selectSeat(this)">
+                                                                    <div class="Seat__SeatContainer-kRrpPi eiaRAH"
+                                                                         color="#B8B8B8">
+                                                                        <div class="Seat__SeatCode-kDfrva gzHTso"
+                                                                             color="#B8B8B8" height="32">
+                                                                            <div th:text="${item.tenGhe}"></div>
+                                                                        </div>
+
+                                                                        <svg width="40" height="32" viewBox="0 0 40 32"
+                                                                             fill="none"
+                                                                             xmlns="http://www.w3.org/2000/svg">
+                                                                            <rect x="8.75" y="2.75" width="22.5"
+                                                                                  height="26.5" rx="2.25" fill="#FFFFFF"
+                                                                                  stroke="#B8B8B8" stroke-width="1.5"
+                                                                                  stroke-linejoin="round"></rect>
+                                                                            <rect x="10.25" y="11.75" width="14.5"
+                                                                                  height="5.5" rx="2.25"
+                                                                                  transform="rotate(90 10.25 11.75)"
+                                                                                  fill="#FFFFFF" stroke="#B8B8B8"
+                                                                                  stroke-width="1.5"
+                                                                                  stroke-linejoin="round"></rect>
+                                                                            <rect x="35.25" y="11.75" width="14.5"
+                                                                                  height="5.5" rx="2.25"
+                                                                                  transform="rotate(90 35.25 11.75)"
+                                                                                  fill="#FFFFFF" stroke="#B8B8B8"
+                                                                                  stroke-width="1.5"
+                                                                                  stroke-linejoin="round"></rect>
+                                                                            <rect x="8.75" y="22.75" width="22.5"
+                                                                                  height="6.5" rx="2.25" fill="#FFFFFF"
+                                                                                  stroke="#B8B8B8" stroke-width="1.5"
+                                                                                  stroke-linejoin="round"></rect>
+                                                                            <path class="icon-selected"
+                                                                                  d="M20.0002 6.33337C16.3202 6.33337 13.3335 9.32004 13.3335 13C13.3335 16.68 16.3202 19.6667 20.0002 19.6667C23.6802 19.6667 26.6668 16.68 26.6668 13C26.6668 9.32004 23.6802 6.33337 20.0002 6.33337ZM18.6668 16.3334L15.3335 13L16.2735 12.06L18.6668 14.4467L23.7268 9.38671L24.6668 10.3334L18.6668 16.3334Z"
+                                                                                  fill="transparent"></path>
+                                                                            <path class="icon-disabled"
+                                                                                  d="M24.96 9.45992L23.54 8.03992L20 11.5899L16.46 8.03992L15.04 9.45992L18.59 12.9999L15.04 16.5399L16.46 17.9599L20 14.4099L23.54 17.9599L24.96 16.5399L21.41 12.9999L24.96 9.45992Z"
+                                                                                  fill="transparent"></path>
+                                                                        </svg>
+
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="steps-footer">
+                        <div class="steps-footer-container">
+                            <div class="steps-footer-left">
+                                <div class="chosen-seats-list">
+                                                <span>Số ghế:&nbsp;</span
+                                                ><b
+                                ><span class="seat-template-seat-code"
+                                ><div class="please-select-seat">
+                                                            Vui lòng chọn ít nhất 1 chỗ ngồi
+                                                        </div></span
+                                ></b
+                                >
+                                </div>
+                            </div>
+                            <div class="steps-footer-right">
+                                <div class="total-label"><span>Tổng cộng: </span></div>
+                                <div class="total-price"><b>0</b>&nbsp;<b>đ</b></div>
+                                <button type="button" class="ant-btn ant-btn-primary">
+                                    <span>Tiếp tục </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<h5 style="font-style: italic; font-weight: bold; color: #6ec1e4; text-align: center; margin-top: 10px">
+    Lưu ý: Saigon Waterbus miễn phí vé cho người cao tuổi từ 70 và các bé dưới 1 tuổi, người khuyết tật và
+    thương binh.
+</h5>
+
+<img th:src="@{/images/325469969_479843330780453_2536484999119177769_n-1-1536x1141.jpg}"
+        alt=""
+        style="width: 70%; display: block; margin-left: auto; margin-right: auto"/>
+
+<div
+        class="row"
+        style="
+                    padding: 10px;
+                    width: 1000px;
+                    display: block;
+                    margin-left: auto;
+                    margin-right: auto;
+                    font-weight: 400;
+                "
+>
+    <h2>Hướng dẫn đặt vé trực tuyến</h2>
+
+    <h3 style="color: #fcb900">Bước 1: Tham khảo lịch khởi hành Saigon Waterbus</h3>
+    <p>Step 1: Check out the departure timetable of Saigon Waterbus</p>
+
+    <h3 style="color: #fcb900">Bước 2: Chọn bến đi – bến đến, chọn ngày khởi hành sau đó chọn tìm vé.</h3>
+    <p><strong>Lưu ý:</strong></p>
+    <ul style="list-style: none">
+        <li>Vé Saigon Waterbus là vé 1 chiều, Quý khách đặt vé đi sau đó đặt vé về.</li>
+        <li>Thời gian đến di chuyển qua các bến như trên lịch khởi hành.</li>
+    </ul>
+    <p><strong>Ví dụ:</strong></p>
+    <ul style="list-style: none">
+        <li>Từ Bạch Đằng – Bình An: 15 phút/ chiều.</li>
+        <li>Từ Bạch Đằng – Thanh Đa: 32 phút/ chiều.</li>
+        <li>Từ Bạch Đằng – Hiệp Bình Chánh: 42 phút/ chiều.</li>
+        <li>Từ Bạch Đằng – Linh Đông: 52 phút/ chiều.</li>
+    </ul>
+
+    <h3 style="color: #fcb900">
+        Bước 3: Chọn vị trí ghế ngồi phù hợp, số lượng ghế ngồi là số lượng vé bạn muốn đặt.
+    </h3>
+    <p>
+        Step 3: Choose your seats position, the number of seats is the number of tickets you want to book.
+    </p>
+
+    <h3 style="color: #fcb900">Bước 4: Điền thông tin liên lạc và tiến hành thanh toán.</h3>
+    <p>Step 4: Fill in contact information and payment.</p>
+
+    <p>
+        <strong>Lưu ý:</strong> Vé Saigon Waterbus không hoàn, không hủy vì vậy Quý khách vui lòng kiểm tra
+        kỹ thông tin trước khi đặt vé, thanh toán.
+    </p>
+    <p>
+        <strong>Note:</strong> Saigon Waterbus’s tickets are non-refundable, non-cancellable, so please
+        check the information carefully before booking and making payment.
+    </p>
+</div>
+
+<script src="https://kit.fontawesome.com/8a355c8929.js" crossorigin="anonymous"></script>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"
+></script>
+<script>
+    $(document).ready(function () {
+
+        $('.btn-label').click(function () {
+            $('#booking-form').toggle();
+
+
+            if ($('#booking-form').is(':visible')) {
+                $('.btn-label').text('Đóng lại');
+            } else {
+                $('.btn-label').text('Hiện ra');
+            }
+        });
+    });
+
+    // function submitBookingForm() {
+    //     var selectedSeats = [];
+    //     $("input[type=checkbox]:checked").each(function () {
+    //         selectedSeats.push($(this).attr("id").replace("ve_", ""));
+    //     });
+    //     $("#bookingForm").append(
+    //         '<input type="hidden" name="selectedSeats" value="' + selectedSeats.join(",") + '">'
+    //     );
+    //     $("#bookingForm").submit();
+    // }
+    function selectSeat(seat) {
+        // Check if the seat is already selected
+        if ($(seat).hasClass('selected')) {
+            // If it is, remove the 'selected' class, the 'data-selected' attribute, and the fill color
+            $(seat).removeClass('selected');
+            $(seat).removeAttr('data-selected');
+            $(seat).find('svg path').css('fill', 'transparent');
+        } else {
+            // If it's not, add the 'selected' class, the 'data-selected' attribute, and change the fill color to green
+            $(seat).addClass('selected');
+            $(seat).attr('data-selected', 'true');
+            $(seat).find('svg path').css('fill', 'green');
+        }
+
+        // Get the IDs of all selected seats
+        var selectedSeats = $('.seat-item.available.z-max.selected').map(function () {
+
+            return this.id.replace('ve_', '');
+        }).get();
+        console.log(selectedSeats);
+        if (selectedSeats.length > 0) {
+            var giaVe = parseFloat($("input[name='idGiaVe']").val()); // get the ticket price
+            var tongCong = selectedSeats.length * giaVe; // calculate the total price
+            $('.chosen-seats-list .seat-template-seat-code').text(selectedSeats.length + ' ghế đã được chọn');
+            $('.total-price b:first').text(tongCong); // update the total price
+        } else {
+            $('.chosen-seats-list .seat-template-seat-code').text('Vui lòng chọn ít nhất 1 chỗ ngồi');
+            $('.total-price b:first').text('0'); // reset the total price to 0
+        }
+
+        $('#selectedSeats').val(selectedSeats.join(','));
+    }
+</script>
+
+</body>
+</html>
